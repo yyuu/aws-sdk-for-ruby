@@ -1,0 +1,214 @@
+# Copyright 2011-2012 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License"). You
+# may not use this file except in compliance with the License. A copy of
+# the License is located at
+#
+#     http://aws.amazon.com/apache2.0/
+#
+# or in the "license" file accompanying this file. This file is
+# distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
+# ANY KIND, either express or implied. See the License for the specific
+# language governing permissions and limitations under the License.
+
+---
+:operations:
+#- :name: CreateHostedZone # POST
+#  :method: :create_hosted_zone
+#  :inputs:
+#    Name:
+#    - :string
+#    - :required
+#    CallerReference:
+#    - :string
+#    - :required
+##   HostedZoneConfig: # FIXME: broken
+##   - :membered_list:
+##     - :structure:
+##         Comment:
+##         - :string
+#  :outputs:
+#    :children:
+#      CreateHostedZoneResponse:
+#        HostedZone:
+#            Id:
+#            Name:
+#            CallerReference:
+#            Config:
+#              Comment:
+#            ResourceRecordSetCount:
+#              :type: :integer
+#        ChangeInfo:
+#          Id:
+#          Status:
+#          SubmittedAt:
+#            :type: :timestamp
+#        DelegationSet:
+#          NameServers:
+#            NameServer:
+#- :name: GetHostedZone # GET
+#  :method: :get_hosted_zone
+#  :inputs:
+#  :outputs:
+#    GetHostedZoneResponse:
+#      HostedZone:
+#        Id:
+#        Name:
+#        CallerReference:
+#        Config:
+#          Comment:
+#        ResourceRecordSetCount:
+#          :type: :integer
+#      DelegationSet:
+#        NameServers:
+#          NameServer:
+#- :name: DeleteHostedZone # DELETE
+#  :method: :delete_hosted_zone
+#  :inputs:
+#  :outputs:
+#    DeleteHostedZoneResponse:
+#      ChangeInfo:
+#        Id:
+#        Status:
+#        SubmittedAt:
+- :name: ListHostedZones
+  :method: :list_hosted_zones
+  :inputs:
+    marker:
+    - :string
+    maxitems:
+    - :string
+  :outputs:
+    :children:
+      HostedZones:
+        :ignore: true
+        :children:
+          HostedZone:
+            :rename: :hosted_zones
+            :list: true
+            :children:
+              Id:
+                :type:
+              Name:
+                :type:
+              CallerReference:
+                :type:
+              Config:
+                :children:
+                  Comment:
+                    :type:
+              ResourceRecordSetCount:
+                :type: :integer
+      Marker:
+        :type:
+      IsTruncated:
+        :type:
+      NextMarker:
+        :type:
+      MaxItems:
+        :type: :integer
+
+#   :children:
+#     ListHostedZonesResponse:
+#       :ignore: true
+#       :children:
+#         HostedZones:
+#           :rename: :hosted_zonez
+#           :list: true
+#           :children:
+#             HostedZone:
+#               :ignore: true
+#               :children:
+#                 Id:
+#                   :rename: :id
+#                 Name:
+#                   :rename: :name
+#                 CallerReference:
+#                   :rename: :caller_reference
+#                 Config:
+#                   :children:
+#                     Comment:
+#                       :rename: :comment
+#                 ResourceRecordSetCount:
+#                   :type: :integer
+
+
+#           :list: true
+#           :children:
+#             HostedZone:
+#               Id:
+#               Name:
+#               CallerReference:
+#               Config:
+#                 Comment:
+#               ResourceRecordSetCount:
+#                 :type: :integer
+
+
+#- :name: ChangeResourceRecordSets # POST
+#  :method: :change_resource_record_sets
+#  :inputs:
+#    ChangeResourceRecordSetsRequest:
+#      ChangeBatch:
+#        Comment:
+#        Changes:
+#          Change:
+#            Action:
+#            ResourceRecordSet:
+#              Name:
+#              Type:
+#              AliasTarget:
+#              SetIdentifier:
+#              Region:
+#              Weight:
+#                :type: :integer
+#              TTL:
+#                :type: :integer
+#              ResourceRecords:
+#                ResourceRecord:
+#                  Value:
+#              AliasTarget:
+#                HostedZoneId:
+#                DNSName:
+#  :outputs:
+#    ChangeResourceRecordSetsResponse:
+#      ChangeInfo:
+#        Id:
+#        Status:
+#        SubmittedAt:
+#- :name: ListResourceRecordSets # GET
+#  :method: :list_resource_record_sets
+#  :inputs:
+#  :outputs:
+#    ListResourceRecordSetsResponse:
+#      ResourceRecordSets:
+#        ResourceRecordSet:
+#          Name:
+#          Type:
+#          AliasTarget:
+#            HostedZoneId:
+#            DNSName:
+#          SetIdentifier:
+#          Weight:
+#            :type: :integer
+#          Region:
+#          TTL:
+#            :type: :integer
+#          ResourceRecords:
+#            ResourceRecord:
+#              Value:
+#      IsTruncated:
+#      MaxItems:
+#        :type: :integer
+#      NextRecordName:
+#      NextRecordType:
+#- :name: GetChange # GET
+#  :method: :get_change
+#  :inputs:
+#  :outputs:
+#    GetChangeResponse:
+#      ChangeInfo:
+#        Id:
+#        Status:
+#        SubmittedAt:
+#          :type: :timestamp
