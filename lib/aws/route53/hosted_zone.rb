@@ -49,10 +49,10 @@ module AWS
       end
 
       # Deletes the hosted zone.
-      # @return [nil]
+      # @return [Change]
       def delete
-        client.delete_hosted_zone(:id => id)
-        nil
+        resp = client.delete_hosted_zone(:id => id)
+        Change.new_from(:delete_hosted_zone, resp, resp[:id], :config => config) if resp and resp[:id]
       end
 
       # @return [Boolean] Returns true if this alarm exists.

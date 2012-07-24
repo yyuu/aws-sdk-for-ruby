@@ -40,6 +40,14 @@ module AWS
         ],
       }}
 
+      let(:delete_response) { client.stub_for(:delete_hosted_zone) }
+
+      let(:delete_details) {{
+        :id => '012345',
+        :status => 'PENDING',
+        :submitted_at => now,
+      }}
+
       let(:now) {
         Time.now
       }
@@ -54,7 +62,9 @@ module AWS
 
       before(:each) do
         response.data = details
+        delete_response.data = delete_details
         client.stub(:get_hosted_zone).and_return(response)
+        client.stub(:delete_hosted_zone).and_return(delete_response)
       end
 
       shared_examples_for "hosted zone attribute" do |attr_name|
@@ -84,15 +94,14 @@ module AWS
 
       end
 
-#     context '#delete' do
+      context '#delete' do
 
-#       it 'calls #delete_alarms on the client' do
-#         client.should_receive(:delete_alarms).
-#           with(:alarm_names => [metric_alarm.name])
-#         metric_alarm.delete
-#       end
+        it 'calls #delete_hosted_zone on the client' do
+          client.should_receive(:delete_hosted_zone)
+          hosted_zone.delete.should be_a(Route53::Change)
+        end
 
-#     end
+      end
 
     end
   end

@@ -75,15 +75,19 @@
                     :rename: :delegation_set
                     :list: true
                     :type:
-#- :name: DeleteHostedZone # DELETE
-#  :method: :delete_hosted_zone
-#  :inputs:
-#  :outputs:
-#    DeleteHostedZoneResponse:
-#      ChangeInfo:
-#        Id:
-#        Status:
-#        SubmittedAt:
+- :name: DeleteHostedZone
+  :method: :delete_hosted_zone
+  :outputs:
+    :children:
+      ChangeInfo:
+        :ignore: true
+        children:
+          Id:
+            :type:
+          Status:
+            :type:
+          SubmittedAt:
+            :type: :timestamp
 - :name: ListHostedZones
   :method: :list_hosted_zones
   :inputs:

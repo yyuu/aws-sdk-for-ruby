@@ -18,7 +18,7 @@ module AWS
   class Route53
 
     AWS.register_autoloads(self, 'aws/route53') do
-#     autoload :Change, 'change'
+      autoload :Change, 'change'
 #     autoload :ChangeCollection, 'change_collection'
       autoload :Client, 'client'
       autoload :Errors, 'errors'
