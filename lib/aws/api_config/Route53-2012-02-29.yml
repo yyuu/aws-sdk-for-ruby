@@ -219,13 +219,16 @@
 #        :type: :integer
 #      NextRecordName:
 #      NextRecordType:
-#- :name: GetChange # GET
-#  :method: :get_change
-#  :inputs:
-#  :outputs:
-#    GetChangeResponse:
-#      ChangeInfo:
-#        Id:
-#        Status:
-#        SubmittedAt:
-#          :type: :timestamp
+- :name: GetChange
+  :method: :get_change
+  :outputs:
+    :children:
+      ChangeInfo:
+        :ignore: true
+        :children:
+          Id:
+            :type:
+          Status:
+            :type:
+          SubmittedAt:
+            :type: :timestamp

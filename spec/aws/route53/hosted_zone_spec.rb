@@ -62,8 +62,8 @@ module AWS
 
       before(:each) do
         response.data = details
-        delete_response.data = delete_details
         client.stub(:get_hosted_zone).and_return(response)
+        delete_response.data = delete_details
         client.stub(:delete_hosted_zone).and_return(delete_response)
       end
 
