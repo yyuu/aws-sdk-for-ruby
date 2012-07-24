@@ -11,6 +11,8 @@
 # ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
+require 'time'
+
 module AWS
   class Route53
 
@@ -34,8 +36,9 @@ module AWS
       # TODO:
       def create name, options = {}
         options[:name] = name
-        client.create_hosted_zone(options)
-        self[alarm_name] # FIXME: how can i get hosted zone id?
+        options[:caller_reference] = "CreateHostedZone, #{name}, #{Time.now.httpdate}" unless options[:caller_reference]
+        resp = client.create_hosted_zone(options)
+        self[resp[:id]]
       end
 
       protected
@@ -48,7 +51,6 @@ module AWS
         options[:maxitems] = limit if limit
 
         resp = client.list_hosted_zones(options)
-p([:ListHostedZones, resp])
         resp.data[:hosted_zones].each do |details|
           hosted_zone = HostedZone.new_from(
             :list_hosted_zones,

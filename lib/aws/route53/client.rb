@@ -76,7 +76,7 @@ module AWS
       end
 
       ## Actions on Hosted Zones
-#     hosted_zone_method :create_hosted_zone, :post
+      hosted_zone_method :create_hosted_zone, :post
 
       hosted_zone_method :get_hosted_zone
 

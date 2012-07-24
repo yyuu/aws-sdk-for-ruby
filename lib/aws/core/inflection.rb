@@ -24,7 +24,7 @@ module AWS
           key.
             sub(/^.*:/, '').                          # strip namespace
             gsub(/([A-Z0-9]+)([A-Z][a-z])/, '\1_\2'). # split acronyms from words
-            scan(/[a-z]+|\d+|[A-Z0-9]+[a-z]*/).       # split remaining words
+            scan(/[a-z]+|\d+|[A-Z0-9]+[a-z0-9]*/).    # split remaining words
             join('_').downcase                        # join parts _ and downcase
 
         end
