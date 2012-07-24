@@ -34,7 +34,7 @@ module AWS
 
       attribute :caller_reference, :static => true
 
-      attribute :config, :static => true
+#     attribute :config, :static => true # FIXME: config has already exist
 
       attribute :resource_record_set_count, :static => true
 

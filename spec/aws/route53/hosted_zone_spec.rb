@@ -52,19 +52,19 @@ module AWS
         Time.now
       }
 
+      before(:each) do
+        response.data = details
+        client.stub(:get_hosted_zone).and_return(response)
+        delete_response.data = delete_details
+        client.stub(:delete_hosted_zone).and_return(delete_response)
+      end
+
       context '#id' do
 
         it 'returns plain id' do
           hosted_zone.id.should == details[:id].sub(%r!^/hostedzone/!, '')
         end
 
-      end
-
-      before(:each) do
-        response.data = details
-        client.stub(:get_hosted_zone).and_return(response)
-        delete_response.data = delete_details
-        client.stub(:delete_hosted_zone).and_return(delete_response)
       end
 
       shared_examples_for "hosted zone attribute" do |attr_name|

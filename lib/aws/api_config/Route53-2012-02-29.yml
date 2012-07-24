@@ -13,39 +13,54 @@
 
 ---
 :operations:
-#- :name: CreateHostedZone # POST
-#  :method: :create_hosted_zone
-#  :inputs:
-#    Name:
-#    - :string
-#    - :required
-#    CallerReference:
-#    - :string
-#    - :required
-##   HostedZoneConfig: # FIXME: broken
-##   - :membered_list:
-##     - :structure:
-##         Comment:
-##         - :string
-#  :outputs:
-#    :children:
-#      CreateHostedZoneResponse:
-#        HostedZone:
-#            Id:
-#            Name:
-#            CallerReference:
-#            Config:
-#              Comment:
-#            ResourceRecordSetCount:
-#              :type: :integer
-#        ChangeInfo:
-#          Id:
-#          Status:
-#          SubmittedAt:
-#            :type: :timestamp
-#        DelegationSet:
-#          NameServers:
-#            NameServer:
+- :name: CreateHostedZone
+  :method: :create_hosted_zone
+  :inputs:
+    Name:
+    - :string
+    - :required
+    CallerReference:
+    - :string
+    - :required
+    HostedZoneConfig:
+    - :structure:
+        Comment:
+        - :string
+  :outputs:
+    :children:
+      HostedZone:
+        :ignore: true
+        :children:
+          Id:
+            :type:
+          Name:
+            :type:
+          CallerReference:
+            :type:
+          Config:
+            :children:
+              Comment:
+                :type:
+          ResourceRecordSetCount:
+            :type: :integer
+      ChangeInfo:
+        :children:
+          Id:
+            :type:
+          Status:
+            :type:
+          SubmittedAt:
+            :type: :timestamp
+      DelegationSet:
+        :ignore: true
+        :children:
+          NameServers:
+            :ignore:
+            :children:
+              NameServer:
+                :rename: :delegation_set
+                :list: true
+                :type:
 - :name: GetHostedZone
   :method: :get_hosted_zone
   :outputs:

@@ -17,7 +17,6 @@ module AWS
   class Route53
 
     # TODO:
-    #
     class HostedZoneCollection
 
       include Core::Collection::WithLimitAndNextToken
@@ -29,16 +28,19 @@ module AWS
 
       # @param [String] zone_id
       # @return [HostedZone]
-      def [] zone_id
-        HostedZone.new(zone_id, :config => config)
+      def [] id
+        HostedZone.new(id, :config => config)
       end
 
       # TODO:
       def create name, options = {}
         options[:name] = name
         options[:caller_reference] = "CreateHostedZone, #{name}, #{Time.now.httpdate}" unless options[:caller_reference]
+        if options[:comment] and options[:hosted_zone_config] ||= {}
+          options[:hosted_zone_config][:comment] = options[:comment]
+        end
         resp = client.create_hosted_zone(options)
-        self[resp[:id]]
+        self[resp[:id]] if resp
       end
 
       protected
