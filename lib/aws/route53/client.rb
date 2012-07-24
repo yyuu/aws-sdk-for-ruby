@@ -41,7 +41,8 @@ module AWS
           configure_request do |req, options|
             req.http_method = verb
             if options.include?(:id)
-              req.path = File.join("/", self.class::API_VERSION, "hostedzone", options[:id])
+              zone_id = options[:id].sub(%r!^/hostedzone/!, '')
+              req.path = File.join("/", self.class::API_VERSION, "hostedzone", zone_id)
             else
               req.path = File.join("/", self.class::API_VERSION, "hostedzone")
             end
@@ -75,26 +76,20 @@ module AWS
       end
 
       ## Actions on Hosted Zones
-#     hosted_zone_method(:create_hosted_zone, :post) {
-#     }
+#     hosted_zone_method :create_hosted_zone, :post
 
-#     hosted_zone_method(:get_hosted_zone, :get) {
-#     }
+      hosted_zone_method :get_hosted_zone
 
-#     hosted_zone_method(:delete_hosted_zone, :delete) {
-#     }
+#     hosted_zone_method :delete_hosted_zone, :delete
 
       hosted_zone_method :list_hosted_zones
 
       ## Actions on Resource Record Sets
-#     rrset_method(:change_resource_record_sets, :post) {
-#     }
+#     rrset_method :change_resource_record_sets, :post
 
-#     rrset_method(:list_method_record_sets, :get) {
-#     }
+#     rrset_method :list_method_record_sets
 
-#     change_method(:get_changes, :get) {
-#     }
+#     change_method :get_changes
 
     end
   end

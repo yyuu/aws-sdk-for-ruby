@@ -57,8 +57,13 @@ module AWS
   
             method_name = op[:method]
   
-            option_parsers[method_name] = OptionGrammar.customize(op[:inputs])
-            xml_parsers[method_name] = XML::Parser.new(op[:outputs])
+            option_args = []
+            option_args << op[:inputs] if op[:inputs]
+            option_parsers[method_name] = OptionGrammar.customize(*option_args)
+
+            xml_args = []
+            xml_args << op[:outputs] if op[:outputs]
+            xml_parsers[method_name] = XML::Parser.new(*xml_args)
   
           end
         end

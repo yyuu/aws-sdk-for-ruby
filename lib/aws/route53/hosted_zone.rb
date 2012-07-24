@@ -31,11 +31,11 @@ module AWS
       attribute :caller_reference, :static => true
 
       populates_from :get_hosted_zone do |resp|
-        resp.data[:hosted_zone].find{|a| a[:id] == id }
+        resp
       end
 
       populates_from :list_hosted_zones do |resp|
-        resp.data[:hosted_zones].find{|a| a[:id] == id }
+        resp.data[:hosted_zones].find { |detail| detail[:id] == id }
       end
 
       # Deletes the hosted zone.
@@ -51,7 +51,7 @@ module AWS
       end
 
       def inspect
-        "<#{self.class} id:#{self.id} name:#{self.name}>"
+        "<#{self.class} id:#{self.id} name:#{self.name} caller_reference:#{self.caller_reference}>"
       end
 
       protected
@@ -61,7 +61,7 @@ module AWS
       end
 
       def get_resource attr_name = nil
-        client.get_hosted_zone(:id => [ id ])
+        client.get_hosted_zone(:id => id)
       end
 
     end

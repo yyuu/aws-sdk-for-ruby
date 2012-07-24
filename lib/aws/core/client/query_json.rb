@@ -50,7 +50,9 @@ module AWS
   
             method_name = op[:method]
   
-            option_parsers[method_name] = OptionGrammar.customize(op[:inputs])
+            option_args = []
+            option_args << op[:inputs] if op[:inputs]
+            option_parsers[method_name] = OptionGrammar.customize(*option_args)
   
           end
         end

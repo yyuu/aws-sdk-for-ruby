@@ -46,22 +46,31 @@
 #        DelegationSet:
 #          NameServers:
 #            NameServer:
-#- :name: GetHostedZone # GET
-#  :method: :get_hosted_zone
-#  :inputs:
-#  :outputs:
-#    GetHostedZoneResponse:
-#      HostedZone:
-#        Id:
-#        Name:
-#        CallerReference:
-#        Config:
-#          Comment:
-#        ResourceRecordSetCount:
-#          :type: :integer
-#      DelegationSet:
-#        NameServers:
-#          NameServer:
+- :name: GetHostedZone
+  :method: :get_hosted_zone
+  :outputs:
+    :children:
+      HostedZone:
+        :ignore: true
+        :children:
+          Id:
+            :type:
+          Name:
+            :type:
+          CallerReference:
+            :type:
+          Config:
+            :children:
+              Comment:
+                :type:
+          ResourceRecordSetCount:
+            :type: :integer
+        DelegationSet:
+          :children:
+            NameServers:
+              :children:
+                NameServer:
+                  :type:
 #- :name: DeleteHostedZone # DELETE
 #  :method: :delete_hosted_zone
 #  :inputs:
