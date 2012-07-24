@@ -65,12 +65,16 @@
                 :type:
           ResourceRecordSetCount:
             :type: :integer
-        DelegationSet:
-          :children:
-            NameServers:
-              :children:
-                NameServer:
-                  :type:
+          DelegationSet:
+            :ignore: true
+            :children:
+              NameServers:
+                :ignore: true
+                :children:
+                  NameServer:
+                    :rename: :delegation_set
+                    :list: true
+                    :type:
 #- :name: DeleteHostedZone # DELETE
 #  :method: :delete_hosted_zone
 #  :inputs:

@@ -18,15 +18,15 @@ module AWS
   class Route53
 
     AWS.register_autoloads(self, 'aws/route53') do
-      autoload :Change, 'change'
-      autoload :ChangeCollection, 'change_collection'
+#     autoload :Change, 'change'
+#     autoload :ChangeCollection, 'change_collection'
       autoload :Client, 'client'
       autoload :Errors, 'errors'
       autoload :HostedZone, 'hosted_zone'
       autoload :HostedZoneCollection, 'hosted_zone_collection'
       autoload :Request, 'request'
-      autoload :ResourceRecord, 'resource_record'
-      autoload :ResourceRecordCollection, 'resource_record_collection'
+#     autoload :ResourceRecord, 'resource_record'
+#     autoload :ResourceRecordCollection, 'resource_record_collection'
     end
 
     include Core::ServiceInterface

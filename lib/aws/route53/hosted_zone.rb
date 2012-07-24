@@ -19,35 +19,45 @@ module AWS
 
       # @private
       def initialize id, options = {}
-        @id = id
+        @id = id.sub(%r!^/hostedzone/!, '')
         super
       end
 
       # @return [String]
       attr_reader :id
 
+      def path
+        "/hostedzone/#{id}"
+      end
+
       attribute :name, :static => true
 
       attribute :caller_reference, :static => true
 
+      attribute :config, :static => true
+
+      attribute :resource_record_set_count, :static => true
+
+      attribute :delegation_set, :static => true
+
       populates_from :get_hosted_zone do |resp|
-        resp
+        resp if resp[:id] == path
       end
 
       populates_from :list_hosted_zones do |resp|
-        resp.data[:hosted_zones].find { |detail| detail[:id] == id }
+        resp.data[:hosted_zones].find { |detail| detail[:id] == path }
       end
 
       # Deletes the hosted zone.
       # @return [nil]
       def delete
-        client.delete_hosted_zone(:zone_id => zone_id)
+        client.delete_hosted_zone(:id => id)
         nil
       end
 
       # @return [Boolean] Returns true if this alarm exists.
       def exists?
-        !get_resource.data[:get_hosted_zone].empty?
+        get_resource.data[:id] == path
       end
 
       def inspect
