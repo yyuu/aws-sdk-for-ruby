@@ -113,7 +113,7 @@ module AWS
         it 'yields hosted zones' do
           stub_n_members(response, 2)
           hosted_zones.count.should == 2
-          hosted_zones.each { |a| a.should be_an(HostedZone) }
+          hosted_zones.each { |a| a.should be_a(HostedZone) }
           hosted_zones.each { |a| a.config.should == config }
           hosted_zones.map(&:id).should == %w(111111 222222)
         end

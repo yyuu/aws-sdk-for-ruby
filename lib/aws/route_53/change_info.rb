@@ -13,7 +13,15 @@
 
 module AWS
   class Route53
-
+    #
+    # @attr_reader [String] id
+    #   change id.
+    #
+    # @attr_reader [String] status
+    #   status of the change.
+    #
+    # @attr_reader [Time] submitted_at
+    #
     class ChangeInfo < Core::Resource
 
       # @private
@@ -22,10 +30,9 @@ module AWS
         super
       end
 
-      # @return [String]
       attr_reader :id
 
-      attribute :status, :static => true
+      attribute :status
 
       attribute :submitted_at, :static => true
 

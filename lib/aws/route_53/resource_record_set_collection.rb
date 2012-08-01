@@ -15,11 +15,14 @@ require 'time'
 
 module AWS
   class Route53
-
+    #
+    # @attr_reader [String] hosted_zone_id
+    #
     class ResourceRecordSetCollection
 
       include Core::Collection::WithLimitAndNextToken
 
+      # @private
       def initialize hosted_zone_id, options = {}
         @hosted_zone_id = hosted_zone_id
         @filters = options[:filters] || {}
@@ -28,32 +31,29 @@ module AWS
 
       attr_reader :hosted_zone_id
 
-      # @param [String] zone_id
+      # Find resource record set by its name, type and identifier.
+      # @param [String, String, String] Name, type and identifier
       # @return [ResourceRecordSet]
       def [] name, type, set_identifier=nil
-        ResourceRecordSet.new(name, type, set_identifier, :hosted_zone_id => hosted_zone_id, :config => config)
+        ResourceRecordSet.new(name, type, :set_identifier => set_identifier, :hosted_zone_id => hosted_zone_id, :config => config)
       end
 
+      # Create new resource record set.
+      # @param [String, String, Hash] Name, type and options.
+      # @return [ResourceRecordSet]
       def create name, type, options = {}
-        batch = ChangeBatch.new
-        batch << CreateRequest.new(create_options)
+        batch = ChangeBatch.new(hosted_zone_id, :comment => options[:comment], :config => config)
+        batch << CreateRequest.new(name, type, options)
 
-        resp = client.change_resource_record_sets(batch.build_query(:hosted_zone_id => hosted_zone_id))
-        if resp[:change_info][:id]
-          change_info = ChangeInfo.new_from(:change_resource_record_sets,
-                                            resp[:change_info],
-                                            resp[:change_info][:id],
-                                            :config => config)
+        change_info = batch.call()
+        if change_info
           ResourceRecordSet.new(name,
                                 type,
-                                set_identifier,
+                                :set_identifier => options[:set_identifier],
                                 :change_info => change_info,
                                 :hosted_zone_id => hosted_zone_id,
                                 :config => config)
         end
-
-
-        self[resp[:hosted_zone][:id]] if resp[:hosted_zone][:id]
       end
 
       protected
@@ -76,7 +76,7 @@ module AWS
             details,
             details[:name],
             details[:type],
-            details[:set_identifier],
+            :set_identifier => details[:set_identifier],
             :hosted_zone_id => hosted_zone_id, :config => config)
 
           yield(rrset)

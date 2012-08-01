@@ -13,7 +13,23 @@
 
 module AWS
   class Route53
-
+    #
+    # @attr_reader [String] id
+    #   hosted zone id.
+    #
+    # @attr_reader [ChangeInfo] change_info
+    #   change info for the newly created HostedZone instance.
+    #
+    # @attr_reader [String] name
+    #   hosted zone name.
+    #
+    # @attr_reader [String] caller_reference
+    #
+    # @attr_reader [Integer] resource_record_set_count
+    #   resource record set count.
+    #
+    # @attr_reader [Array<String>]
+    #
     class HostedZone < Core::Resource
 
       # @private
@@ -23,12 +39,12 @@ module AWS
         super
       end
 
-      # @return [String]
       attr_reader :id
 
-      # @return [Change]
       attr_reader :change_info
 
+      # Hosted zone path.
+      # @return [String]
       def path
         "/hostedzone/#{id}"
       end
@@ -39,7 +55,7 @@ module AWS
 
 #     attribute :config, :static => true # FIXME: config has already exist
 
-      attribute :resource_record_set_count, :static => true
+      attribute :resource_record_set_count
 
       attribute :delegation_set, :static => true
 
@@ -72,6 +88,8 @@ module AWS
         get_resource.data[:hosted_zone][:id] == path
       end
 
+      # Returns resource recoed sets.
+      # @return [ResourceRecordSetCollection]
       def resource_record_sets
         ResourceRecordSetCollection.new(id, :config => config)
       end

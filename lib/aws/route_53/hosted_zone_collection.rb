@@ -15,22 +15,25 @@ require 'time'
 
 module AWS
   class Route53
-
     class HostedZoneCollection
 
       include Core::Collection::WithLimitAndNextToken
 
+      # @private
       def initialize options = {}
         @filters = options[:filters] || {}
         super
       end
 
-      # @param [String] zone_id
+      # Find hosted zone by id.
+      # @param [String] hosted_zone_id
       # @return [HostedZone]
-      def [] id
-        HostedZone.new(id, :config => config)
+      def [] hosted_zone_id
+        HostedZone.new(hosted_zone_id, :config => config)
       end
 
+      # @param [String, Hash] hosted_zone_id
+      # @return [HostedZone]
       def create name, options = {}
         options[:name] = name
         options[:caller_reference] = "CreateHostedZone, #{name}, #{Time.now.httpdate}" unless options[:caller_reference]

@@ -60,12 +60,12 @@ module AWS
   class Route53
 
     AWS.register_autoloads(self, 'aws/route_53') do
-      autoload :ChangeRequest, 'change'
+      autoload :ChangeRequest, 'change_batch'
       autoload :ChangeBatch, 'change_batch'
       autoload :ChangeInfo, 'change_info'
       autoload :Client, 'client'
-      autoload :CreateRequest, 'change'
-      autoload :DeleteRequest, 'change'
+      autoload :CreateRequest, 'change_batch'
+      autoload :DeleteRequest, 'change_batch'
       autoload :Errors, 'errors'
       autoload :HostedZone, 'hosted_zone'
       autoload :HostedZoneCollection, 'hosted_zone_collection'

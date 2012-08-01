@@ -41,19 +41,9 @@ module AWS
         ],
       }}
 
-      let(:delete_response) { client.stub_for(:delete_hosted_zone) }
-
-      let(:delete_details) {{
-        :id => '012345',
-        :status => 'PENDING',
-        :submitted_at => now,
-      }}
-
       before(:each) do
         response.data[:hosted_zone] = details
         client.stub(:get_hosted_zone).and_return(response)
-        delete_response.data[:change_info] = delete_details
-        client.stub(:delete_hosted_zone).and_return(delete_response)
       end
 
       context '#id' do
@@ -94,6 +84,13 @@ module AWS
       context '#delete' do
 
         it 'calls #delete_hosted_zone on the client' do
+          response = client.stub_for(:delete_hosted_zone)
+          response.data[:change_info] = {
+            :id => '012345',
+            :status => 'PENDING',
+            :submitted_at => now,
+          }
+          client.stub(:delete_hosted_zone).and_return(response)
           client.should_receive(:delete_hosted_zone)
           hosted_zone.delete.should be_a(Route53::ChangeInfo)
         end
