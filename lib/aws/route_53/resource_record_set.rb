@@ -14,6 +14,19 @@
 module AWS
   class Route53
     #
+    # = Modify resource record set
+    #
+    #   rrsets = AWS::Route53::HostedZone.new(hosted_zone_id).rrsets
+    #   rrset = rrsets['foo.example.com.', 'A']
+    #   rrset.ttl = 3600
+    #   rrset.update
+    #
+    # = Delete existing resource record set
+    #
+    #   rrsets = AWS::Route53::HostedZone.new(hosted_zone_id).rrsets
+    #   rrset = rrsets['foo.example.com.', 'A']
+    #   rrset.delete
+    #
     # @attr_reader [String] hosted_zone_id
     #
     # @attr_reader [ChangeInfo] change_info
@@ -137,7 +150,7 @@ module AWS
         }.nil?
       end
 
-      # Delete and create resource record set with new value.
+      # Update values of resource record set.
       # @param [Hash]  Options for change batch.
       # @return [ResourceRecordSet] New resource record set with current value.
       def update(options={})
@@ -150,22 +163,19 @@ module AWS
         delete_options[:resource_records] = resource_records if resource_records
 
         create_options = delete_options.merge(@create_options)
+        @create_options = {}
         batch = ChangeBatch.new(hosted_zone_id, options.merge(:config => config))
         batch << DeleteRequest.new(delete_options[:name], delete_options[:type], delete_options)
         batch << CreateRequest.new(create_options[:name], create_options[:type], create_options)
 
-        change_info = batch.call()
-        if change_info
-          ResourceRecordSet.new(name,
-                                type,
-                                :set_identifier => set_identifier,
-                                :change_info => change_info,
-                                :hosted_zone_id => hosted_zone_id,
-                                :config => config)
-        end
+        @name = create_options[:name]
+        @type = create_options[:type]
+        @set_identifier = create_options[:set_identifier]
+        @change_info = batch.call()
+        self
       end
 
-      # Delete this resource record set.
+      # Delete resource record set.
       # @param [Hash] Options for change batch.
       # @return [ChangeInfo]
       def delete(options={})

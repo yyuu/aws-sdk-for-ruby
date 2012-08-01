@@ -124,12 +124,12 @@ module AWS
         q[:resource_record_set] = {}
         q[:resource_record_set][:name] = name
         q[:resource_record_set][:type] = type
-        q[:resource_record_set][:set_identifier] = @change_options[:set_identifier]
-        q[:resource_record_set][:weight] = @change_options[:weight]
-        q[:resource_record_set][:region] = @change_options[:region]
-        q[:resource_record_set][:ttl] = @change_options[:ttl]
-        q[:resource_record_set][:resource_records] = @change_options[:resource_records]
-        q[:resource_record_set][:alias_target] = @change_options[:alias_target]
+        q[:resource_record_set][:set_identifier] = @change_options[:set_identifier] if @change_options[:set_identifier]
+        q[:resource_record_set][:weight] = @change_options[:weight] if @change_options[:weight]
+        q[:resource_record_set][:region] = @change_options[:region] if @change_options[:region]
+        q[:resource_record_set][:ttl] = @change_options[:ttl] if @change_options[:ttl]
+        q[:resource_record_set][:resource_records] = @change_options[:resource_records] if @change_options[:resource_records]
+        q[:resource_record_set][:alias_target] = @change_options[:alias_target] if @change_options[:alias_target]
         q
       end
     end

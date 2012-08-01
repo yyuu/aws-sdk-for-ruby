@@ -47,14 +47,10 @@ module AWS
       let(:details) {{
         :name => 'baz.example.com.',
         :type => 'CNAME',
-        :set_identifier => nil,
-        :weight => nil,
-        :region => nil,
         :ttl => 300,
         :resource_records => [
           { :value => 'bar.example.com.' },
         ],
-        :alias_target => nil,
       }}
 
       let(:create_response) {
